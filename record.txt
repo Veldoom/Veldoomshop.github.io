@@ -1,0 +1,3 @@
+Type: TXT Record
+Host: veldoom-dev.com
+Value: i85b903bd2c1c40cabc04a5bfe842c4c6
