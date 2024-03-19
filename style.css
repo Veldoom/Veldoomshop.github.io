@@ -43,5 +43,14 @@ nav{
     letter-spacing: 2px;
     text-decoration: none;
     text-transform: capitalize;
-    cursor: pointer;
+    background-color: #8F74EB;
+    border: 2px solid #FEFEFE;
+    padding: 10px;
+}
+.navitems li button:hover{
+    background-color: #BDAAFA;
+    cursor: pointer
+}
+h2{
+    color: #8F74EB;
 }
