@@ -35,7 +35,6 @@ nav{
 .navitems li{
     list-style: none;
     margin: 10px;
-    color: #1E2233;
 }
 .navitems li button{
     font-size: 10px;
@@ -44,12 +43,16 @@ nav{
     text-decoration: none;
     text-transform: capitalize;
     background-color: #8F74EB;
+    color: #1E2233;
     border: 2px solid #FEFEFE;
     padding: 10px;
 }
 .navitems li button:hover{
     background-color: #BDAAFA;
     cursor: pointer
+}
+#currentpage{
+    background-color: #BDAAFA;
 }
 h2{
     color: #8F74EB;
@@ -125,9 +128,7 @@ iPad 3
 
 /* iPhone 6 ----------- */
 @media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : landscape) and (-webkit-device-pixel-ratio: 2){
-    h2{
-        color: white;
-    }
+
 }
 
 @media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : portrait) and (-webkit-device-pixel-ratio: 2){
