@@ -51,6 +51,85 @@ nav{
     background-color: #BDAAFA;
     cursor: pointer
 }
+.sidebar{
+    position: absolute;
+    height: 100%;
+    width: 200px;
+    background: #BDAAFA;
+    transition: 0.5s ease;
+    transform: translateX(-200px);
+}
+.sidebar ul{
+    position: relative;
+}
+.sidebar ul li{
+    list-style: none;
+}
+.sidebar ul li a{
+    color: #1E2233;
+    display: block;
+    padding: 5px 0;
+    font-weight: 400;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+.sidebar ul li a i{
+    width: 40px;
+    text-align: center;
+}
+input[type="checkbox"]{
+    appearance: none;
+    visibility: hidden;
+    display: none;
+}
+.toggle{
+    display: none;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    top: 30px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 1;
+}
+.toggle .common{
+    position: absolute;
+    height: 2px;
+    width: 20px;
+    left: 50%;
+    background: #FEFEFE;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+    transition: 0.3s ease;
+}
+.toggle .top{
+    top: 30%;
+}
+.toggle .middle{
+    top: 50%;
+}
+.toggle .bottom{
+    top: 70%;
+}
+input[type="checkbox"]:checked ~ .toggle .top{
+    transform: rotate(-45deg);
+    left: 2px;
+    top: 14px;
+    width: 25px;
+}
+input[type="checkbox"]:checked ~ .toggle .middle{
+    transform: translateX(20px);
+    opacity: 0;
+}
+input[type="checkbox"]:checked ~ .toggle .bottom{
+    transform: rotate(45deg);
+    left: 2px;
+    top: 14px;
+    width: 25px;
+}
+input[type="checkbox"]:checked ~ .sidebar{
+    transform: translateX(0px);
+}
 #currentpage{
     background-color: #BDAAFA;
 }
@@ -70,8 +149,8 @@ h2{
 }
 
 /* Smartphones (portrait) ----------- */
-@media only screen and (max-width : 320px) {
-/* Styles */
+@media only screen and (max-width : 1100px) {
+
 }
 
 /* iPads (portrait and landscape) ----------- */
@@ -128,7 +207,9 @@ iPad 3
 
 /* iPhone 6 ----------- */
 @media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : landscape) and (-webkit-device-pixel-ratio: 2){
-
+    .toggle{
+        display: flex;
+    }
 }
 
 @media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : portrait) and (-webkit-device-pixel-ratio: 2){
