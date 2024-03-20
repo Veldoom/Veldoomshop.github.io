@@ -207,13 +207,21 @@ iPad 3
 
 /* iPhone 6 ----------- */
 @media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : landscape) and (-webkit-device-pixel-ratio: 2){
+    .navitems{
+        display: none;
+    }
     .toggle{
         display: flex;
     }
 }
 
 @media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : portrait) and (-webkit-device-pixel-ratio: 2){
-/* Styles */
+    .navitems{
+        display: none;
+    }
+    .toggle{
+        display: flex;
+    }
 }
 
 /* iPhone 6+ ----------- */
