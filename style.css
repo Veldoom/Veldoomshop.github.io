@@ -1,9 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:wght@400%;600;900&display=swap');
+/*@import url('https://fonts.googleapis.com/css?family=Poppins:wght@400%;600;900&display=swap');
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'poppins', sans-serif;
+}
+body{
+    background: linear-gradient(to bottom right, #1E2233, #6E40F2);
 }
 .coming-soon {
     text-align: center;
@@ -13,7 +16,6 @@
 .container{
     width: 100%;
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #1E2233, #6E40F2);
 }
 nav{
     display: flex;
@@ -141,6 +143,7 @@ h2{
 }
 
 
+
 /* Smartphones (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 /* Styles */
@@ -153,7 +156,15 @@ h2{
 
 /* Smartphones (portrait) ----------- */
 @media only screen and (max-width : 1100px) {
-
+    /*.navitems{
+        display: none;
+    }
+    .toggle{
+        display: flex;
+    }
+    nav{
+        height: auto;
+    }*/
 }
 
 /* iPads (portrait and landscape) ----------- */
@@ -210,7 +221,7 @@ iPad 3
 
 /* iPhone 6 ----------- */
 @media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : landscape) and (-webkit-device-pixel-ratio: 2){
-    .navitems{
+    /*.navitems{
         display: none;
     }
     .toggle{
@@ -218,11 +229,11 @@ iPad 3
     }
     nav{
         height: auto;
-    }
+    }*/
 }
 
 @media only screen and (min-device-width: 375px) and (max-device-height: 667px) and (orientation : portrait) and (-webkit-device-pixel-ratio: 2){
-    .navitems{
+    /*.navitems{
         display: none;
     }
     .toggle{
@@ -230,7 +241,7 @@ iPad 3
     }
     nav{
         height: auto;
-    }
+    }*/
 }
 
 /* iPhone 6+ ----------- */
