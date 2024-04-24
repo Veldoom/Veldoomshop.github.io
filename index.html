@@ -24,11 +24,14 @@
                 <li><a href="infos.html"><button>infos</button></a></li>
                 <li><a href="questions.html"><button>questions</button></a></li>
                 <li><a href="free-rewards.html"><button>recompanses gratuites</button></a></li>
-                <div>
-                    <li><a href="sign-in.html"><button id="sign-in">sign in</button></a></li>
-                    <li><a href="sign-up.html"><button id="sign-up">sign up</button></a></li>
+                <div id="not-logged-in-content">
+                    <li><a href="sign-in.html"><button>connexion</button></a></li>
+                    <li><a href="sign-up.html"><button>inscription</button></a></li>
                 </div>
-                
+                <div id="logged-in-content" style="display: none;">
+                    <li><button id="logout-button">déconnexion</button></li>
+                    <li><a href="account.html"><button>compte</button></a></li>
+                </div>
             </ul>
         </nav>
         <label>
@@ -67,5 +70,38 @@
         <h2>les elements en cours de developpement sont:</h2>
         <h2>• la connection et la creation de compte</h2>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+
+        function updateContent() {
+            const notLoggedInContent = document.getElementById('not-logged-in-content');
+            const loggedInContent = document.getElementById('logged-in-content');
+
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    notLoggedInContent.style.display = 'none';
+                    loggedInContent.style.display = 'block';
+                } else {
+                    notLoggedInContent.style.display = 'block';
+                    loggedInContent.style.display = 'none';
+                }
+            });
+        }
+
+        updateContent();
+    </script>
 </body>
 </html>

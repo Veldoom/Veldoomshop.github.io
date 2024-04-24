@@ -24,10 +24,8 @@
             <li><a href="infos.html"><button>infos</button></a></li>
             <li><a href="questions.html"><button>questions</button></a></li>
             <li><a href="free-rewards.html"><button>recompanses gratuites</button></a></li>
-            <div>
-                <li><a href="sign-in.html"><button id="currentpage" id="sign-in">sign in</button></a></li>
-                <li><a href="sign-up.html"><button id="sign-up">sign up</button></a></li>
-            </div>
+            <li><a href="sign-in.html"><button id="currentpage">connexion</button></a></li>
+            <li><a href="sign-up.html"><button>inscription</button></a></li>
 
         </ul>
     </nav>
@@ -63,12 +61,11 @@
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Password">
         <button type="submit">Sign In</button>
-        <button type="button" id="google-signin">Sign In with Google</button>
     </form>
 </div>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCABW6FNXOi2p5AC5zP2jJCSVDDrJHmSl8",
@@ -81,10 +78,8 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
-    const googleProvider = new GoogleAuthProvider();
 
     const signinForm = document.getElementById('signin-form');
-    const googleSigninButton = document.getElementById('google-signin');
 
     signinForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -97,28 +92,6 @@
             console.log(userCredential.user);
         } catch (error) {
             console.error(error);
-        }
-    });
-
-    googleSigninButton.addEventListener('click', async () => {
-        try {
-            const userCredential = await signInWithPopup(auth, googleProvider);
-            console.log(userCredential.user);
-        } catch (error) {
-            console.error(error);
-        }
-    });
-
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
-    const signUpButton = document.getElementById('sign-up');
-    const signInButton = document.getElementById('sign-in');
-
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            signInButton.textContent = "Se déconnecter";
-        } else {
-            signInButton.textContent = "sign-in";
         }
     });
 </script>
