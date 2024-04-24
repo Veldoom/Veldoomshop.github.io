@@ -61,11 +61,12 @@
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Password">
         <button type="submit">Sign Up</button>
+        <button type="button" id="google-signup">Sign Up with Google</button>
     </form>
 </div>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCABW6FNXOi2p5AC5zP2jJCSVDDrJHmSl8",
@@ -78,8 +79,10 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
+    const googleProvider = new GoogleAuthProvider();
 
     const signupForm = document.getElementById('signup-form');
+    const googleSignupButton = document.getElementById('google-signup');
 
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -89,7 +92,15 @@
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            // User signed up successfully
+            console.log(userCredential.user);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    googleSignupButton.addEventListener('click', async () => {
+        try {
+            const userCredential = await signInWithPopup(auth, googleProvider);
             console.log(userCredential.user);
         } catch (error) {
             console.error(error);
