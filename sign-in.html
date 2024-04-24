@@ -24,8 +24,10 @@
             <li><a href="infos.html"><button>infos</button></a></li>
             <li><a href="questions.html"><button>questions</button></a></li>
             <li><a href="free-rewards.html"><button>recompanses gratuites</button></a></li>
-            <li><a href="sign-in.html"><button id="currentpage">sign in</button></a></li>
-            <li><a href="sign-up.html"><button>sign up</button></a></li>
+            <div>
+                <li><a href="sign-in.html"><button id="currentpage" id="sign-in">sign in</button></a></li>
+                <li><a href="sign-up.html"><button id="sign-up">sign up</button></a></li>
+            </div>
 
         </ul>
     </nav>
@@ -104,6 +106,19 @@
             console.log(userCredential.user);
         } catch (error) {
             console.error(error);
+        }
+    });
+
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const signUpButton = document.getElementById('sign-up');
+    const signInButton = document.getElementById('sign-in');
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            signInButton.textContent = "Se déconnecter";
+        } else {
+            signInButton.textContent = "sign-in";
         }
     });
 </script>
