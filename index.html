@@ -24,14 +24,14 @@
                 <li><a href="infos.html"><button>infos</button></a></li>
                 <li><a href="questions.html"><button>questions</button></a></li>
                 <li><a href="free-rewards.html"><button>recompanses gratuites</button></a></li>
-                <div id="not-logged-in-content">
+                <ul class="not-logged-in-content">
                     <li><a href="sign-in.html"><button>connexion</button></a></li>
                     <li><a href="sign-up.html"><button>inscription</button></a></li>
-                </div>
-                <div id="logged-in-content" style="display: none;">
+                </ul>
+                <ul class="logged-in-content" style="display: none;">
                     <li><button id="logout-button">déconnexion</button></li>
                     <li><a href="account.html"><button>compte</button></a></li>
-                </div>
+                </ul>
             </ul>
         </nav>
         <label>
@@ -72,14 +72,14 @@
     </div>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
-    <script>
+    <script type="module">
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyCABW6FNXOi2p5AC5zP2jJCSVDDrJHmSl8",
+            authDomain: "veldoom-dev.firebaseapp.com",
+            projectId: "veldoom-dev",
+            storageBucket: "veldoom-dev.appspot.com",
+            messagingSenderId: "722825723470",
+            appId: "1:722825723470:web:72838e505626be249dcd1f"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -87,8 +87,9 @@
         const auth = firebase.auth();
 
         function updateContent() {
-            const notLoggedInContent = document.getElementById('not-logged-in-content');
-            const loggedInContent = document.getElementById('logged-in-content');
+            const notLoggedInContent = document.querySelector('.not-logged-in-content');
+            const loggedInContent = document.querySelector('.logged-in-content');
+
 
             auth.onAuthStateChanged((user) => {
                 if (user) {

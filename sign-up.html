@@ -24,8 +24,14 @@
             <li><a href="infos.html"><button>infos</button></a></li>
             <li><a href="questions.html"><button>questions</button></a></li>
             <li><a href="free-rewards.html"><button>recompenses gratuites</button></a></li>
-            <li><a href="sign-in.html"><button>connexion</button></a></li>
-            <li><a href="sign-up.html"><button id="currentpage">inscription</button></a></li>
+            <ul class="not-logged-in-content">
+                <li><a href="sign-in.html"><button>connexion</button></a></li>
+                <li><a href="sign-up.html"><button id="currentpage">inscription</button></a></li>
+            </ul>
+            <ul class="logged-in-content" style="display: none;">
+                <li><button id="logout-button">déconnexion</button></li>
+                <li><a href="account.html"><button>compte</button></a></li>
+            </ul>
 
         </ul>
     </nav>
@@ -94,6 +100,24 @@
             console.error(error);
         }
     });
+
+    function updateContent() {
+        const notLoggedInContent = document.querySelector('.not-logged-in-content');
+        const loggedInContent = document.querySelector('.logged-in-content');
+
+
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    notLoggedInContent.style.display = 'none';
+                    loggedInContent.style.display = 'block';
+                } else {
+                    notLoggedInContent.style.display = 'block';
+                    loggedInContent.style.display = 'none';
+                }
+            });
+        }
+
+        updateContent();
 </script>
 </body>
 </html>
