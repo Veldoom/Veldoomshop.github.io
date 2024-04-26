@@ -70,9 +70,21 @@
         <h2>les elements en cours de developpement sont:</h2>
         <h2>• la connection et la creation de compte</h2>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js"></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4230243272243631" crossorigin="anonymous"></script>
+    <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-format="autorelaxed"
+        data-ad-client="ca-pub-4230243272243631"
+        data-ad-slot="7556437026"></ins>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
     <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyCABW6FNXOi2p5AC5zP2jJCSVDDrJHmSl8",
             authDomain: "veldoom-dev.firebaseapp.com",
@@ -82,24 +94,34 @@
             appId: "1:722825723470:web:72838e505626be249dcd1f"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
 
-        const auth = firebase.auth();
+        const btnDeconnexion = document.getElementById('logout-button');
+
+        btnDeconnexion.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                localStorage.setItem('connected', false);
+                updateContent();
+            }).catch((error) => {
+                console.error("Erreur lors de la déconnexion :", error);
+            });
+        });
+
 
         function updateContent() {
             const notLoggedInContent = document.querySelector('.not-logged-in-content');
             const loggedInContent = document.querySelector('.logged-in-content');
 
+            let connected = localStorage.getItem('connected');
 
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    notLoggedInContent.style.display = 'none';
-                    loggedInContent.style.display = 'block';
-                } else {
-                    notLoggedInContent.style.display = 'block';
-                    loggedInContent.style.display = 'none';
-                }
-            });
+            if (connected == 'true') {
+                notLoggedInContent.style.display = 'none';
+                loggedInContent.style.display = 'block';
+            } else {
+                notLoggedInContent.style.display = 'block';
+                loggedInContent.style.display = 'none';
+            }
         }
 
         updateContent();

@@ -141,6 +141,9 @@ input[type="checkbox"]:checked ~ .sidebar{
 h2{
     color: #8F74EB;
 }
+#sign-up_msg{
+    color: #8F74EB;
+}
 
 
 

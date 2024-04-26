@@ -63,15 +63,17 @@
     </label>
 </div>
 <div class="container">
-    <form id="signup-form">
+    <form id="signup-form" novalidate>
         <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
+        <span id="mail-error"></span>
+        <input type="password" id="password" placeholder="mot de passe">
+        <span id="mdp-error"></span>
         <button type="submit">Sign Up</button>
     </form>
 </div>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCABW6FNXOi2p5AC5zP2jJCSVDDrJHmSl8",
@@ -87,18 +89,58 @@
 
     const signupForm = document.getElementById('signup-form');
 
+    let mailerror = document.getElementById('mail-error');
+    let mdperror = document.getElementById('mdp-error');
+
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = signupForm['email'].value;
         const password = signupForm['password'].value;
 
-        try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            console.log(userCredential.user);
-        } catch (error) {
-            console.error(error);
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
         }
+        if (!validateEmail(email) && password.length < 6) {
+            mailerror.innerHTML = "L'adresse e-mail doit être valide.";
+            mdperror.innerHTML = "Le mot de passe doit faire 6 caractères ou plus.";
+            return;
+        } else if (!validateEmail(email)) {
+            mailerror.innerHTML = "L'adresse e-mail doit être valide.";
+            mdperror.innerHTML = "";
+            return;
+        } else if (password.length < 6) {
+            mdperror.innerHTML = "Le mot de passe doit faire 6 caractères ou plus.";
+            mailerror.innerHTML = "";
+            return;
+        }
+
+        async function checkEmailExists(email) {
+            try {
+                const methods = await fetchSignInMethodsForEmail(auth, email);
+                return methods.length > 0;
+            } catch (error) {
+                console.error("Une erreur s'est produite lors de la vérification de l'email :", error);
+                return false;
+            }
+        }
+
+        checkEmailExists(email).then(async (emailExists) => {
+            if (emailExists) {
+                console.log("Cet email est déjà utilisé.");
+                mailerror.innerHTML = "Cet email est déjà utilisé.";
+            } else {
+                console.log("Cet email n'est pas encore utilisé.");
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    console.log(userCredential.user);
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        });
     });
 
     function updateContent() {
@@ -110,6 +152,7 @@
                 if (user) {
                     notLoggedInContent.style.display = 'none';
                     loggedInContent.style.display = 'block';
+                    localStorage.setItem('connected', 'true');
                 } else {
                     notLoggedInContent.style.display = 'block';
                     loggedInContent.style.display = 'none';

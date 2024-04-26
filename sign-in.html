@@ -90,6 +90,7 @@
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log(userCredential.user);
+            localStorage.setItem('connected', 'true');
         } catch (error) {
             console.error(error);
         }
