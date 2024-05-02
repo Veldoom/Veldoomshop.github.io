@@ -15,21 +15,21 @@
     </div>
 
     <script type="application/javascript">
-        function adStatusCallback(status) {                  // Status Callback Method
+        function adStatusCallback(status) {
             console.log('Ad Status: ' + status);
         }
 
-        var options = {                                     // Video Ad Options
+        var options = {
              zoneId: 2050,
-             accountId: 8152,                               // Required field for RMS                                                                               
-             siteId: 8678,                                  // Required field for RMS
+             accountId: 8152,                                                                             
+             siteId: 8678,
              adStatusCb: adStatusCallback,
-             userId: auth.currentUser.uid,                      // UUID4 recommended
+             userId: sign_in().then(() => {auth.currentUser.uid}),
              custom: currentUserReward(),
           };  
         playBtn = document.getElementById("playButton");                                                      
         playBtn.onclick = function () {                     
-                     invokeApplixirVideoUnit(options);     // Invoke Video ad
+                     invokeApplixirVideoUnit(options);
        }
     </script>
     <div class="header">
