@@ -8,33 +8,9 @@
     <link rel="icon" type="image/png" href="logo.png">
 </head>
 <body>
-    <button type="button" id="playButton">Watch Video</button>
-    <script type="text/javascript" src="https://cdn.applixir.com/applixir.sdk3.0m.js"></script>
-    <div id="applixir_vanishing_div" hidden>
-        <iframe id="applixir_parent"></iframe>
-    </div>
-
-    <script type="application/javascript">
-        function adStatusCallback(status) {
-            console.log('Ad Status: ' + status);
-        }
-
-        var options = {
-             zoneId: 2050,
-             accountId: 8152,                                                                             
-             siteId: 8678,
-             adStatusCb: adStatusCallback,
-             userId: sign_in().then(() => {auth.currentUser.uid}),
-             custom: currentUserReward(),
-          };  
-        playBtn = document.getElementById("playButton");                                                      
-        playBtn.onclick = function () {                     
-                     invokeApplixirVideoUnit(options);
-       }
-    </script>
     <div class="header">
         <nav>
-            <img class="logo" src="logo.png">
+            <a href="index.html"><img class="logo" src="logo.png"></a>
             <ul class="navitems">
                 <li>
                     <button>
@@ -86,7 +62,7 @@
         </label>
     </div>
     <div class="container">
-
+        
     </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
