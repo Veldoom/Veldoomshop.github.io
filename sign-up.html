@@ -24,14 +24,8 @@
             <li><a href="infos.html"><button>infos</button></a></li>
             <li><a href="questions.html"><button>questions</button></a></li>
             <li><a href="free-rewards.html"><button>recompenses gratuites</button></a></li>
-            <ul class="not-logged-in-content">
-                <li><a href="sign-in.html"><button>connexion</button></a></li>
-                <li><a href="sign-up.html"><button id="currentpage">inscription</button></a></li>
-            </ul>
-            <ul class="logged-in-content" style="display: none;">
-                <li><button id="logout-button">déconnexion</button></li>
-                <li><a href="account.html"><button>compte</button></a></li>
-            </ul>
+            <li><a href="sign-in.html"><button>connexion</button></a></li>
+            <li><button id="currentpage">inscription</button></a></li>
 
         </ul>
     </nav>
@@ -69,11 +63,13 @@
         <input type="password" id="password" placeholder="mot de passe">
         <span id="mdp-error"></span>
         <button type="submit">Sign Up</button>
+        <button id="sign-in-btn" style="display: none;">se connecter</button>
     </form>
 </div>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyCABW6FNXOi2p5AC5zP2jJCSVDDrJHmSl8",
@@ -86,8 +82,10 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
+    const firestore = getFirestore();
 
     const signupForm = document.getElementById('signup-form');
+    const signinbtn = document.getElementById('sign-in-btn')
 
     let mailerror = document.getElementById('mail-error');
     let mdperror = document.getElementById('mdp-error');
@@ -116,51 +114,70 @@
             return;
         }
 
-        async function checkEmailExists(email) {
-            try {
-                const methods = await fetchSignInMethodsForEmail(auth, email);
-                return methods.length > 0;
-            } catch (error) {
-                console.error("Une erreur s'est produite lors de la vérification de l'email :", error);
-                return false;
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            console.log(userCredential.user);
+            localStorage.setItem('connected', 'true');
+            localStorage.setItem('email', email);
+            localStorage.setItem('password', password);
+            const userId = auth.currentUser.uid;
+            const userDocRef = doc(firestore, 'users', userId);
+            const userData = {
+                coins: 0,
+            };
+            setDoc(userDocRef, userData)
+                .then(() => {
+                    console.log('Données utilisateur ajoutées avec succès');
+                    window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error('Erreur lors de l\'ajout des données utilisateur :', error);
+                });
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/email-already-in-use') {
+                mailerror.innerHTML = "un compte existe deja avec cette adresse email";
+                signinbtn.style.display = "block";
             }
         }
-
-        checkEmailExists(email).then(async (emailExists) => {
-            if (emailExists) {
-                console.log("Cet email est déjà utilisé.");
-                mailerror.innerHTML = "Cet email est déjà utilisé.";
-            } else {
-                console.log("Cet email n'est pas encore utilisé.");
-                try {
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    console.log(userCredential.user);
-                    window.location.href = 'index.html';
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        });
     });
 
-    function updateContent() {
-        const notLoggedInContent = document.querySelector('.not-logged-in-content');
-        const loggedInContent = document.querySelector('.logged-in-content');
+    signinbtn.addEventListener('click', async () => {
+        const email = signupForm['email'].value;
+        const password = signupForm['password'].value;
 
-
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    notLoggedInContent.style.display = 'none';
-                    loggedInContent.style.display = 'block';
-                    localStorage.setItem('connected', 'true');
-                } else {
-                    notLoggedInContent.style.display = 'block';
-                    loggedInContent.style.display = 'none';
-                }
-            });
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        if (!validateEmail(email) && password.length < 6) {
+            mailerror.innerHTML = "L'adresse e-mail doit être valide.";
+            mdperror.innerHTML = "Le mot de passe doit faire 6 caractères ou plus.";
+            return;
+        } else if (!validateEmail(email)) {
+            mailerror.innerHTML = "L'adresse e-mail doit être valide.";
+            mdperror.innerHTML = "";
+            return;
+        } else if (password.length < 6) {
+            mdperror.innerHTML = "Le mot de passe doit faire 6 caractères ou plus.";
+            mailerror.innerHTML = "";
+            return;
         }
 
-        updateContent();
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            console.log(userCredential.user);
+            localStorage.setItem('connected', 'true');
+            localStorage.setItem('email', email);
+            localStorage.setItem('password', password);
+            window.location.href = 'index.html';
+        } catch (error) {
+            console.error(error);
+            if (error.code === 'auth/invalid-credential') {
+                mailerror.innerHTML = "le mot de passe ne correspond pas a cet email";
+            }
+        }
+    });
 </script>
 </body>
 </html>

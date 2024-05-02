@@ -24,7 +24,7 @@
             <li><a href="infos.html"><button>infos</button></a></li>
             <li><a href="questions.html"><button>questions</button></a></li>
             <li><a href="free-rewards.html"><button>recompanses gratuites</button></a></li>
-            <li><a href="sign-in.html"><button id="currentpage">connexion</button></a></li>
+            <li><a href="sign-in.html"><button id="currentpage">connexion</button></li>
             <li><a href="sign-up.html"><button>inscription</button></a></li>
 
         </ul>
@@ -59,7 +59,9 @@
 <div class="container">
     <form id="signin-form">
         <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
+        <span id="mail-error"></span>
+        <input type="password" id="password" placeholder="mot de passe">
+        <span id="mdp-error"></span>
         <button type="submit">Sign In</button>
     </form>
 </div>
@@ -81,18 +83,48 @@
 
     const signinForm = document.getElementById('signin-form');
 
+    let mailerror = document.getElementById('mail-error');
+    let mdperror = document.getElementById('mdp-error');
+
     signinForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const email = signinForm['email'].value;
         const password = signinForm['password'].value;
 
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        if (!validateEmail(email) && password.length < 6) {
+            mailerror.innerHTML = "L'adresse e-mail doit être valide.";
+            mdperror.innerHTML = "Le mot de passe doit faire 6 caractères ou plus.";
+            return;
+        } else if (!validateEmail(email)) {
+            mailerror.innerHTML = "L'adresse e-mail doit être valide.";
+            mdperror.innerHTML = "";
+            return;
+        } else if (password.length < 6) {
+            mdperror.innerHTML = "Le mot de passe doit faire 6 caractères ou plus.";
+            mailerror.innerHTML = "";
+            return;
+        }
+
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log(userCredential.user);
             localStorage.setItem('connected', 'true');
+            localStorage.setItem('email', email);
+            localStorage.setItem('password', password);
+            window.location.href = 'index.html';
         } catch (error) {
             console.error(error);
+            if (error.code === 'auth/invalid-credential') {
+                mailerror.innerHTML = "le mot de passe ne correspond pas a cet email";
+                if (password.length >= 6) {
+                    mdperror.innerHTML = "";
+                }
+            }
         }
     });
 </script>

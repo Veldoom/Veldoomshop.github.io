@@ -10,7 +10,7 @@
 <body>
     <div class="header">
         <nav>
-            <img class="logo" src="logo.png">
+            <a href="index.html"><img class="logo" src="logo.png"></a>
             <ul class="navitems">
                 <li>
                     <button>
@@ -24,14 +24,8 @@
                 <li><a href="infos.html"><button>infos</button></a></li>
                 <li><a href="questions.html"><button>questions</button></a></li>
                 <li><a href="free-rewards.html"><button>recompanses gratuites</button></a></li>
-                <ul class="not-logged-in-content">
-                    <li><a href="sign-in.html"><button>connexion</button></a></li>
-                    <li><a href="sign-up.html"><button>inscription</button></a></li>
-                </ul>
-                <ul class="logged-in-content" style="display: none;">
-                    <li><a href="coins-ads.html"><button><img id="coinimg" src="coin.png"><span id="coinsdisplay"></span></button></a></li>
-                    <li><a href="account.html"><button>compte</button></a></li>
-                </ul>
+                <li><button><img id="coinimg" src="coin.png"><span id="coinsdisplay"></span></button></li>
+                <li><button id="currentpage">compte</button></li>
             </ul>
         </nav>
         <label>
@@ -62,15 +56,9 @@
         </label>
     </div>
     <div class="container">
-        <h2>site en cours de developpement. pour plus d'informations vous pouvez contacter le developpeur en mp sur discord avec le pseudo veldoom</h2>
-        <h2><br>les elements disponnibles actuelement sont: </h2>
-        <h2>• le retour a l'accueil en avec le logo</h2>
-        <h2>• l'acces au chaines twitch et youtube</h2>
-        <h2>• l'acces au autres pages via la barre de navigation</h2>
-        <h2>• la connection et la creation de compte</h2>
-        <h2><br>les elements en cours de developpement sont:</h2>
-        <h2>• le système de coins</h2>
+        <button id="logout-button">deconnexion</button>
     </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
@@ -102,16 +90,9 @@
                 try {
                     const userCredential = await signInWithEmailAndPassword(auth, email, password);
                     console.log(auth.currentUser);
-                    notLoggedInContent.style.display = 'none';
-                    loggedInContent.style.display = 'block';
                 } catch (error) {
                     console.error('Erreur lors de la connexion :', error);
-                    notLoggedInContent.style.display = 'block';
-                    loggedInContent.style.display = 'none';
                 }
-            } else {
-                notLoggedInContent.style.display = 'block';
-                loggedInContent.style.display = 'none';
             }
         }
 
@@ -130,6 +111,19 @@
             })
             .catch((error) => {
                 console.error('Erreur lors de la récupération des données utilisateur :', error);
+            });
+        });
+
+        const btnDeconnexion = document.getElementById('logout-button');
+
+        btnDeconnexion.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                localStorage.setItem('connected', false);
+                localStorage.removeItem('email');
+                localStorage.removeItem('password');
+                window.location.href = 'index.html';
+            }).catch((error) => {
+                console.error("Erreur lors de la déconnexion :", error);
             });
         });
     </script>
