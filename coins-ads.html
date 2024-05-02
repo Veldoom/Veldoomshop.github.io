@@ -24,7 +24,7 @@
              accountId: 8152,                               // Required field for RMS                                                                               
              siteId: 8678,                                  // Required field for RMS
              adStatusCb: adStatusCallback,
-             userId: currentUserID(),                      // UUID4 recommended
+             userId: auth.currentUser.uid,                      // UUID4 recommended
              custom: currentUserReward(),
           };  
         playBtn = document.getElementById("playButton");                                                      
