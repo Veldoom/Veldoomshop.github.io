@@ -128,10 +128,22 @@
             setDoc(userDocRef, userData)
                 .then(() => {
                     console.log('Données utilisateur ajoutées avec succès');
-                    window.location.href = 'index.html';
                 })
                 .catch((error) => {
                     console.error('Erreur lors de l\'ajout des données utilisateur :', error);
+                });
+
+            const all_games_ai_DocRef = doc(firestore, 'all-games_ai', userId);
+            const all_games_ai_Data = {
+                updated: false,
+            };
+            setDoc(all_games_ai_DocRef, all_games_ai_Data)
+                .then(() => {
+                    console.log('Données all games ai ajoutées avec succès');
+                    //window.location.href = 'index.html';
+                })
+                .catch((error) => {
+                    console.error('Erreur lors de l\'ajout des données all games ai :', error);
                 });
         } catch (error) {
             console.error(error);
